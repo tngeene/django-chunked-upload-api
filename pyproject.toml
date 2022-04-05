@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "django_chunked_file_upload"
+version = "0.1.0"
+description = "This is project handles file uploads in chunks using Django Rest Framework"
+authors = ["tngeene <tngeene27@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Django = "^4.0.3"
+djangorestframework = "^3.13.1"
+django-environ = "^0.8.1"
+django-cors-headers = "^3.11.0"
+drf-chunked-upload = "^0.5.1"
+
+[tool.poetry.dev-dependencies]
+black = "^22.1.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
