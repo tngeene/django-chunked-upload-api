@@ -114,6 +114,10 @@ if DEBUG:
         'rest_framework.renderers.BrowsableAPIRenderer', )
 
 
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+
+GS_BUCKET_NAME = env('GS_BUCKET_NAME')
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_HEADERS = list(default_headers) + [

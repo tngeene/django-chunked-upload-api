@@ -2,8 +2,8 @@ import uuid
 from django.db import models
 from .utils import generate_chunked_filename, rename_blob, generate_offline_filename
 from drf_chunked_upload.models import ChunkedUpload
-from django.utils.translation import ugettext_lazy as _
-from django.core.files import UploadedFile
+from django.utils.translation import gettext_lazy as _
+from django.core.files.uploadedfile import UploadedFile
 from django.db import transaction
 from django.utils import timezone
 from drf_chunked_upload import settings as _settings
