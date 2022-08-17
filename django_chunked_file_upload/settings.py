@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+from ast import Is
 import os
 import io
 from pathlib import Path
@@ -23,6 +24,7 @@ env_file = os.path.join(BASE_DIR, ".env")
 env = environ.Env(DEBUG=(bool, False))
 
 DEBUG = env("DEBUG", cast=bool, default=True)
+IS_PRODUCTION = env("IS_PRODUCTION", cast=bool, default=True)
 
 APPENGINE_URL = env("APPENGINE_URL", default=None)
 if APPENGINE_URL:
@@ -37,11 +39,11 @@ else:
     ALLOWED_HOSTS = ["*"]
 
 
-if os.path.isfile(env_file):
-    # use a local .env file if provided
+if not IS_PRODUCTION:
+    # use a local .env file for local development
     env.read_env(env_file)
 
-elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
+elif os.environ.get("GOOGLE_CLOUD_PROJECT", None) and IS_PRODUCTION:
     # Pull secrets from Secret Manager
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
 
@@ -55,6 +57,7 @@ else:
     raise Exception("No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
 
 SECRET_KEY = env("SECRET_KEY")
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
@@ -76,6 +79,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -111,9 +115,16 @@ WSGI_APPLICATION = 'django_chunked_file_upload.wsgi.application'
 
 DATABASES = {"default": env.db()}
 
-if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
+if not IS_PRODUCTION:
+    DATABASE_URL = env('DATABASE_URL', default='sqlite:///db.sqlite')
+    DATABASES["default"]["ENGINE"] =  env('DEV_DB_ENGINE')
+    DATABASES["default"]["NAME"] =  env('DEV_DB_NAME')
+
+
+elif os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
     DATABASES["default"]["HOST"] = "127.0.0.1"
     DATABASES["default"]["PORT"] = 5432
+
 
 
 # Password validation
@@ -142,7 +153,10 @@ if DEBUG:
         'rest_framework.renderers.BrowsableAPIRenderer', )
 
 
-DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+if IS_PRODUCTION:
+    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+else:
+    DEFAULT_FILE_STORAGE = 'django.core.storages.FileSystemStorage'
 
 GS_BUCKET_NAME = env('GS_BUCKET_NAME')
 

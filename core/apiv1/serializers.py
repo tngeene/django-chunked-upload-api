@@ -1,7 +1,7 @@
-from drf_chunked_upload.serializers import ChunkedUploadSerializer
 from core.models import ChunkedUploadFile
+from drf_chunked_upload import serializers as chunking_serializers
 
-class FileChunkedUploadSerializer(ChunkedUploadSerializer):
+class ChunkedUploadSerializer(chunking_serializers.ChunkedUploadSerializer):
     viewname = 'cms:files:chunk_upload_files_part'
 
     class Meta:

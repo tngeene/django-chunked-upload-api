@@ -151,7 +151,7 @@ pytz = "*"
 
 [[package]]
 name = "drf-chunked-upload"
-version = "0.5.1"
+version = "0.5.0"
 description = "Upload large files to Django REST Framework in multiple chunks, with the ability to resume if the upload is interrupted."
 category = "main"
 optional = false
@@ -449,7 +449,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "66f0f8c001da4b68df0686b634cd8b8a6bcaab630f1169a365f14ef303661e07"
+content-hash = "66fc5725126fd140788d07e40920d2cc2ab67eb9243c07d3972cc71c7da05391"
 
 [metadata.files]
 asgiref = [
@@ -512,10 +512,7 @@ djangorestframework = [
     {file = "djangorestframework-3.13.1-py3-none-any.whl", hash = "sha256:24c4bf58ed7e85d1fe4ba250ab2da926d263cd57d64b03e8dcef0ac683f8b1aa"},
     {file = "djangorestframework-3.13.1.tar.gz", hash = "sha256:0c33407ce23acc68eca2a6e46424b008c9c02eceb8cf18581921d0092bc1f2ee"},
 ]
-drf-chunked-upload = [
-    {file = "drf-chunked-upload-0.5.1.tar.gz", hash = "sha256:7c4faa401295cc24bd270cee41f7f0af5268f91ec477237c4e40bcb51adddfef"},
-    {file = "drf_chunked_upload-0.5.1-py3-none-any.whl", hash = "sha256:1a2802d024f21e3ba86158bd31bb8fc33af96c0b8c0b87a759201ca0318f832a"},
-]
+drf-chunked-upload = []
 google-api-core = []
 google-auth = []
 google-cloud-secret-manager = []

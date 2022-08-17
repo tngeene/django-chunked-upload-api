@@ -5,5 +5,5 @@ from core.models import ChunkedUploadFile, OfflineFile
 # Register your models here.
 
 
-admin.register(OfflineFile)
-admin.register(ChunkedUploadFile)
+admin.site.register(OfflineFile)
+admin.site.register(ChunkedUploadFile)

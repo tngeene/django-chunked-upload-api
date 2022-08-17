@@ -1,16 +1,17 @@
+from core.apiv1.serializers import ChunkedUploadSerializer
+from core.apiv1.utils import handle_chunked_file_model_association
+from core.models import ChunkedUploadFile
 from django.shortcuts import get_object_or_404
 from drf_chunked_upload.views import ChunkedUploadView
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-
-from ..models import ChunkedUploadFile
-from ..utils import handle_chunked_file_model_association
-from .serializers import FileChunkedUploadSerializer
 
 
 class OfflineFileChunkedUploadView(ChunkedUploadView):
     model = ChunkedUploadFile
-    serializer_class = FileChunkedUploadSerializer
+    serializer_class = ChunkedUploadSerializer
+    permission_classes = (AllowAny,)
 
     # TODO: remove this after validating md5 hash
     do_checksum_check = False
