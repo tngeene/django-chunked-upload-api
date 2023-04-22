@@ -1,5 +1,6 @@
 FILE_TYPES = [
     ('Image', 'Image'),
     ('Video', 'Video'),
-    ('App', 'App'),
+    ('Apk', 'Apk'),
+    ('Document', 'Document'),
 ]

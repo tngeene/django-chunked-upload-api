@@ -26,11 +26,13 @@ def rename_blob(blob_name: str, new_name: str) -> str:
     blob = bucket.blob(blob_name)
 
     new_blob = bucket.rename_blob(blob, new_name)
+    breakpoint()
     return new_blob
 
 
 def generate_offline_filename(instance, filename: str) -> str:
     ext = filename.split(".")[-1]
     name = f"{instance.unique_id}.{ext}"
+    breakpoint()
     url = f"files/{instance.file_type}/{instance.id}/{name}"
     return url

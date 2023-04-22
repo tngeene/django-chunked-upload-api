@@ -12,8 +12,6 @@
 
 # $ gcloud topic gcloudignore
 
-#
-
 .gcloudignore
 
 # If you would like to upload your .git directory, .gitignore file or files

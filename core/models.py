@@ -8,6 +8,9 @@ from django.db import transaction
 from django.utils import timezone
 from drf_chunked_upload import settings as _settings
 from .constants import FILE_TYPES
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class CommonInfo(models.Model):
@@ -26,6 +29,14 @@ class ChunkedUploadFile(ChunkedUpload):
         upload_to=generate_chunked_filename,
         null=True,
     )
+    user = models.ForeignKey(
+        User,
+        related_name="chunked_uploads",
+        editable=False,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
     def allowed_owners(self):
         return super(ChunkedUploadFile, self).allowed_owners()
@@ -36,7 +47,8 @@ class ChunkedUploadFile(ChunkedUpload):
     def append_chunk(self, chunk, chunk_size=None, save=True):
         cloud_storage_file = self.file
         cloud_storage_file.close()
-        cloud_storage_file.open(mode="w")
+        # cloud_storage_file.open(mode="w")
+        self.file.open(mode='ab')
         for subchunk in chunk.chunks():
             cloud_storage_file.write(subchunk)
         if chunk_size is not None:

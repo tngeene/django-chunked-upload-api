@@ -17,6 +17,7 @@ from corsheaders.defaults import default_headers
 import environ
 from google.cloud import secretmanager
 from urllib.parse import urlparse
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # .env file path and setup
@@ -57,57 +58,56 @@ else:
     raise Exception("No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
 
 SECRET_KEY = env("SECRET_KEY")
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # third party libs
-    'rest_framework',
-    'corsheaders',
-    'drf_chunked_upload',
-
+    "rest_framework",
+    "corsheaders",
+    "drf_chunked_upload",
+    "rest_framework.authtoken",
     # django apps
-    'core',
+    "core",
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'django_chunked_file_upload.urls'
+ROOT_URLCONF = "django_chunked_file_upload.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'django_chunked_file_upload.wsgi.application'
+WSGI_APPLICATION = "django_chunked_file_upload.wsgi.application"
 
 
 # Database
@@ -116,9 +116,9 @@ WSGI_APPLICATION = 'django_chunked_file_upload.wsgi.application'
 DATABASES = {"default": env.db()}
 
 if not IS_PRODUCTION:
-    DATABASE_URL = env('DATABASE_URL', default='sqlite:///db.sqlite')
-    DATABASES["default"]["ENGINE"] =  env('DEV_DB_ENGINE')
-    DATABASES["default"]["NAME"] =  env('DEV_DB_NAME')
+    DATABASE_URL = env("DATABASE_URL", default="sqlite:///db.sqlite")
+    DATABASES["default"]["ENGINE"] = env("DEV_DB_ENGINE")
+    DATABASES["default"]["NAME"] = env("DEV_DB_NAME")
 
 
 elif os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
@@ -126,39 +126,39 @@ elif os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
     DATABASES["default"]["PORT"] = 5432
 
 
-
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
 # disable browsable api in production
-DEFAULT_RENDERER_CLASSES = ('rest_framework.renderers.JSONRenderer', )
+DEFAULT_RENDERER_CLASSES = ("rest_framework.renderers.JSONRenderer",)
 
 if DEBUG:
     DEFAULT_RENDERER_CLASSES = DEFAULT_RENDERER_CLASSES + (
-        'rest_framework.renderers.BrowsableAPIRenderer', )
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    )
 
 
 if IS_PRODUCTION:
-    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
 else:
-    DEFAULT_FILE_STORAGE = 'django.core.storages.FileSystemStorage'
+    DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
-GS_BUCKET_NAME = env('GS_BUCKET_NAME')
+GS_BUCKET_NAME = env("GS_BUCKET_NAME")
 
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -168,9 +168,9 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'Africa/Nairobi'
+TIME_ZONE = "Africa/Nairobi"
 
 USE_I18N = True
 
@@ -180,15 +180,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = 'static'
+STATIC_URL = "/static/"
+STATIC_ROOT = "static"
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = 'media'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = "media"
 
 STATICFILES_DIRS = []
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
