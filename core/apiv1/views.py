@@ -17,7 +17,6 @@ class OfflineFileChunkedUploadView(ChunkedUploadView):
     do_checksum_check = False
 
     def _post(self, request, pk=None, *args, **kwargs) -> Response:
-        breakpoint()
         chunked_upload = None
         if pk:
             upload_id = pk
@@ -36,6 +35,5 @@ class OfflineFileChunkedUploadView(ChunkedUploadView):
         # uploaded file model.
         data = request.data
         object_id = data["object_id"]
-        breakpoint()
         handle_chunked_file_model_association(chunked_upload, object_id)
         return Response({"data": "File Upload successful"}, status=status.HTTP_200_OK)
